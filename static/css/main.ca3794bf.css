@@ -1,0 +1,2 @@
+@tailwind base;@tailwind components;@tailwind utilities;@layer base{html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}a[href]{@apply underline hover:text-blue-600}}@layer components{.has-tooltip:hover .tooltip,.tooltip{@apply visible z-50}}
+/*# sourceMappingURL=main.ca3794bf.css.map*/
