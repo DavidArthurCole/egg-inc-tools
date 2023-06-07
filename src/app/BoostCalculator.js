@@ -33,6 +33,7 @@ const BoostCalculator = (props) => {
   const [internalHatcheryCalm, setInternalHatcheryCalm] = useState(200)
   const [isOffline, setIsOffline] = useState(true)
 
+  const [doubleBoostLength, setDoubleBoostLength] = useState(false)
   const [hasProPermit, setHasProPermit] = useState(true)
   const [showOldBoosts, setShowOldBoosts] = useState(false)
 
@@ -99,9 +100,6 @@ const BoostCalculator = (props) => {
               Artifact Boost Boost Bonus
             </div>
             <div className="flex space-x-2">
-              <div className="flex items-center dark:text-white text-opacity-50">
-                +
-              </div>
               <Input
                 type="number"
                 className="flex-grow"
@@ -123,9 +121,6 @@ const BoostCalculator = (props) => {
               <a href="https://wasmegg.netlify.app/artifact-sandbox/#/b/" target="_blank">Calculate @ Artifact Sandbox</a>
             </div>
             <div className="flex space-x-2">
-              <div className="flex items-center dark:text-white text-opacity-50">
-                +
-              </div>
               <Input
                 type="number"
                 step={0.01}
@@ -227,6 +222,30 @@ const BoostCalculator = (props) => {
             </div>
 
           </div>
+
+          <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 space-y-6 md:space-x-3 lg:space-y-0 lg:space-x-6">
+          <div className="flex flex-col flex-row">
+              <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
+                2x Boost Duration Event
+                <span class="uppercase bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">NEW</span>
+              </div>
+              <div className="flex space-x-2">
+                <div className="flex-grow flex items-center dark:text-white text-opacity-50 w-12">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={doubleBoostLength}
+                      onChange={({ target: { checked } }) =>
+                        setDoubleBoostLength(checked)
+                      }
+                    />
+                    <span>2x Boost Duration Event</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {haveValues && (
@@ -237,6 +256,7 @@ const BoostCalculator = (props) => {
             showOldBoosts={showOldBoosts}
             artifactBoostBoostBonus={artifactBoostBoostBonus}
             dilithiumBoostBonus={dilithiumBoostBonus ? dilithiumBoostBonus : 1}
+            doubleBoostLength={doubleBoostLength}
           />
         )}
       </div>
