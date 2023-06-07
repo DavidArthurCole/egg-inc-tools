@@ -1,8 +1,8 @@
 {
   "name": "egg-inc-tools",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
-  "homepage": "https://saladfork.github.io/egg-inc-tools/",
+  "homepage": "https://davidarthurcole.github.io/egg-inc-tools/",
   "scripts": {
     "build": "craco build",
     "predeploy": "yarn build",
