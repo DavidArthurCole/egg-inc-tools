@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/egg-inc-tools/static/css/main.6106aa07.css",
-    "main.js": "/egg-inc-tools/static/js/main.036072fa.js",
+    "main.css": "/egg-inc-tools/static/css/main.eb966ba9.css",
+    "main.js": "/egg-inc-tools/static/js/main.0648dab0.js",
     "index.html": "/egg-inc-tools/index.html",
-    "main.6106aa07.css.map": "/egg-inc-tools/static/css/main.6106aa07.css.map",
-    "main.036072fa.js.map": "/egg-inc-tools/static/js/main.036072fa.js.map"
+    "main.eb966ba9.css.map": "/egg-inc-tools/static/css/main.eb966ba9.css.map",
+    "main.0648dab0.js.map": "/egg-inc-tools/static/js/main.0648dab0.js.map"
   },
   "entrypoints": [
-    "static/css/main.6106aa07.css",
-    "static/js/main.036072fa.js"
+    "static/css/main.eb966ba9.css",
+    "static/js/main.0648dab0.js"
   ]
 }
