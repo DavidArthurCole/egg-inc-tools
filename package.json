@@ -1,6 +1,6 @@
 {
   "name": "egg-inc-tools",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "homepage": "https://davidarthurcole.github.io/egg-inc-tools/",
   "scripts": {
     "build": "craco build",

@@ -14,6 +14,9 @@ const BoostTable = ({
   artifactBoostBoostBonus,
   dilithiumBoostBonus,
   doubleBoostLength,
+  internalHatcheryBuff,
+  maxTokens,
+  maxHours,
 }) => {
   const [limit] = useState(50)
   const [sortBy, setSortBy] = useState('cost')
@@ -21,7 +24,7 @@ const BoostTable = ({
   const boostsToShow = useMemo(() => {
     let combos = boostCombinations
 
-    combos.forEach((c) => c.time = c.getComboTime() * dilithiumBoostBonus);
+    combos.forEach((c) => c.time = +(c.getComboTime() * dilithiumBoostBonus).toFixed(2));
 
     if (!hasProPermit) {
       combos = combos.filter((c) => c.prisms.length + c.beacons.length <= 2)
@@ -31,8 +34,18 @@ const BoostTable = ({
     }
     combos = combos.filter(
       (c) =>
-        c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}) >=
+        c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}, {internalHatcheryBuff}) >=
         target * 0.98
+    )
+
+    combos = combos.filter(
+      (c) => c.tokens <= maxTokens
+    )
+
+    console.log("Max hours: " + maxHours)
+
+    combos = combos.filter(
+      (c) => c.time / 60 <= maxHours
     )
 
     combos = orderBy(
@@ -43,7 +56,7 @@ const BoostTable = ({
 
     combos = combos.slice(0, limit)
     return combos
-  }, [limit, hasProPermit, showOldBoosts, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength])
+  }, [limit, hasProPermit, showOldBoosts, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength, internalHatcheryBuff, maxTokens, maxHours])
 
   return (
     <table className="w-full mx-auto border border-blue-600">
@@ -131,7 +144,7 @@ const BoostTable = ({
               </td>
               <td className="px-2 py-1 text-right text-black dark:text-white font-semibold">
                 {displayValueShort(
-                  chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength})
+                  chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}, {internalHatcheryBuff})
                 )}{' '}
                 🐔
               </td>
