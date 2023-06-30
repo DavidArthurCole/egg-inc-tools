@@ -57,7 +57,7 @@ const BoostCalculator = (props) => {
 
   useEffect(() => {
     refreshDilithiumBoostBonus();
-  }, [t2Dils, t3Dils, t4Dils]);
+  }, [t2Dils, t3Dils, t4Dils, refreshDilithiumBoostBonus]);
 
   const refreshDilithiumBoostBonus = () => {
 
