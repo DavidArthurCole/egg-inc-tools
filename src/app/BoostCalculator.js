@@ -55,12 +55,7 @@ const BoostCalculator = (props) => {
   const [t3Dils, setT3Dils] = useState(0)
   const [t4Dils, setT4Dils] = useState(0)
 
-  useEffect(() => {
-    refreshDilithiumBoostBonus();
-  }, [t2Dils, t3Dils, t4Dils, refreshDilithiumBoostBonus]);
-
   const refreshDilithiumBoostBonus = () => {
-
     var mult = 1;
     //For each T4, multiply by 1.08 compounding
     mult *= Math.pow(1.08, t4Dils);
@@ -68,9 +63,14 @@ const BoostCalculator = (props) => {
     mult *= Math.pow(1.06, t3Dils);
     //For each T2, multiply by 1.03 compounding
     mult *= Math.pow(1.03, t2Dils);
-
+  
     setDilithiumBoostBonus(mult);
   }
+  
+  useEffect(() => {
+    refreshDilithiumBoostBonus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t2Dils, t3Dils, t4Dils]);
 
   const haveValues = !!(targetChickenCount && internalHatchRate)
 
