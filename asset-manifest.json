@@ -1,13 +1,20 @@
 {
   "files": {
-    "main.css": "/egg-inc-tools/static/css/main.eb966ba9.css",
-    "main.js": "/egg-inc-tools/static/js/main.87a3e585.js",
+    "main.css": "/egg-inc-tools/static/css/main.3796482e.css",
+    "main.js": "/egg-inc-tools/static/js/main.4b92cfa8.js",
+    "static/media/Monocle4.png": "/egg-inc-tools/static/media/Monocle4.f559802b9e290eb10f7a.png",
+    "static/media/Dilithium_Stone4.png": "/egg-inc-tools/static/media/Dilithium_Stone4.2eb382a48b2708708a06.png",
+    "static/media/Monocle3.png": "/egg-inc-tools/static/media/Monocle3.64d1758aa2aa7b1256f3.png",
+    "static/media/Monocle2.png": "/egg-inc-tools/static/media/Monocle2.df441b6c4f0c4bb13e33.png",
+    "static/media/Monocle1.png": "/egg-inc-tools/static/media/Monocle1.7a4c2b96c7a22f42e778.png",
+    "static/media/Dilithium_Stone3.png": "/egg-inc-tools/static/media/Dilithium_Stone3.6004c1b7d38256cf6c98.png",
+    "static/media/Dilithium_Stone2.png": "/egg-inc-tools/static/media/Dilithium_Stone2.3c837af73c8f6f380bdf.png",
     "index.html": "/egg-inc-tools/index.html",
-    "main.eb966ba9.css.map": "/egg-inc-tools/static/css/main.eb966ba9.css.map",
-    "main.87a3e585.js.map": "/egg-inc-tools/static/js/main.87a3e585.js.map"
+    "main.3796482e.css.map": "/egg-inc-tools/static/css/main.3796482e.css.map",
+    "main.4b92cfa8.js.map": "/egg-inc-tools/static/js/main.4b92cfa8.js.map"
   },
   "entrypoints": [
-    "static/css/main.eb966ba9.css",
-    "static/js/main.87a3e585.js"
+    "static/css/main.3796482e.css",
+    "static/js/main.4b92cfa8.js"
   ]
 }
