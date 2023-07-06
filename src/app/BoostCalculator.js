@@ -21,41 +21,48 @@ import monocleUrl3 from 'app/images/Monocle3.png'
 import monocleUrl4 from 'app/images/Monocle4.png'
 
 const BoostCalculator = (props) => {
-  const [targetChickenCountValue, setTargetChickenCount] = useState('')
+  const [targetChickenCountValue, setTargetChickenCount] = useState('');
   const unthrottledTargetChickenCount = useMemo(
     () => parseValueString(targetChickenCountValue),
     [targetChickenCountValue]
-  )
-  const targetChickenCount = useThrottle(unthrottledTargetChickenCount)
+  );
+  const targetChickenCount = useThrottle(unthrottledTargetChickenCount);
 
-  const [unthrottledHatchRate, setInternalHatchRate] = useState(null)
-  const internalHatchRate = useThrottle(unthrottledHatchRate)
+  const [unthrottledHatchRate, setInternalHatchRate] = useState(null);
+  const internalHatchRate = useThrottle(unthrottledHatchRate);
 
   const [
     unthrottledArtifactBoostBoostBonus,
     setArtifactBoostBoostBonus,
-  ] = useState()
+  ] = useState();
   const artifactBoostBoostBonus = useThrottle(
     unthrottledArtifactBoostBoostBonus
-  )
+  );
 
-  const [dilithiumBoostBonus, setDilithiumBoostBonus] = useState()
+  const [dilithiumBoostBonus, setDilithiumBoostBonus] = useState();
 
-  const [internalHatcheryBuff, setInternalHatcheryBuff] = useState(0)
-  const [internalHatcheryCalm, setInternalHatcheryCalm] = useState(200)
-  const [isOffline, setIsOffline] = useState(true)
+  const [internalHatcheryBuff, setInternalHatcheryBuff] = useState(0);
+  const [internalHatcheryCalm, setInternalHatcheryCalm] = useState(200);
+  const [isOffline, setIsOffline] = useState(true);
 
-  const [doubleBoostLength, setDoubleBoostLength] = useState(false)
-  const [hasProPermit, setHasProPermit] = useState(true)
-  const [showOldBoosts, setShowOldBoosts] = useState(false)
-  const [maxTokens, setMaxTokens] = useState(30)
-  const [maxHours, setMaxHours] = useState(6)
+  const [doubleBoostLength, setDoubleBoostLength] = useState(false);
+  const [hasProPermit, setHasProPermit] = useState(true);
+  const [showOldBoosts, setShowOldBoosts] = useState(false);
+  const [maxTokens, setMaxTokens] = useState(30);
+  const [maxHours, setMaxHours] = useState(6);
 
-  const [t2Dils, setT2Dils] = useState(0)
-  const [t3Dils, setT3Dils] = useState(0)
-  const [t4Dils, setT4Dils] = useState(0)
+  const [t2Dils, setT2Dils] = useState(0);
+  const [prevT2Dils, setPrevT2Dils] = useState(t2Dils);
+  const [t3Dils, setT3Dils] = useState(0);
+  const [prevT3Dils, setPrevT3Dils] = useState(t3Dils);
+  const [t4Dils, setT4Dils] = useState(0);
+  const [prevT4Dils, setPrevT4Dils] = useState(t4Dils);
 
   const refreshDilithiumBoostBonus = () => {
+
+    var total = parseInt(t4Dils) + parseInt(t3Dils) + parseInt(t2Dils);
+    if(total > 12) handleBlur(4);
+
     var mult = 1;
     //For each T4, multiply by 1.08 compounding
     mult *= Math.pow(1.08, t4Dils);
@@ -71,6 +78,80 @@ const BoostCalculator = (props) => {
     refreshDilithiumBoostBonus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t2Dils, t3Dils, t4Dils]);
+
+  const handleButtonIncrement = (parent) => {
+    switch (parent){
+      case 4: if(t4Dils === 12) return; setT4Dils(t4Dils + 1); handleDilChange(4, t4Dils + 1); break;
+      case 3: if(t3Dils === 12) return; setT3Dils(t3Dils + 1); handleDilChange(3, t3Dils + 1); break;
+      case 2: if(t2Dils === 12) return; setT2Dils(t2Dils + 1); handleDilChange(2, t2Dils + 1); break;
+      default: break;
+    }
+  }
+
+  const handleButtonDecrement = (parent) => {
+    switch (parent){
+      case 4: setT4Dils(t4Dils - 1); handleDilChange(4, t4Dils - 1); break;
+      case 3: setT3Dils(t3Dils - 1); handleDilChange(3, t3Dils - 1); break;
+      case 2: setT2Dils(t2Dils - 1); handleDilChange(2, t2Dils - 1); break;
+      default: break;
+    }
+  }
+
+  const handleDilChange = (parent, value) => {
+      //Handle mobile (no value)
+      if(value === "") value = 0;
+      else if(value > 12) value = 12;
+      else if(value < 0) value = 0;
+
+      switch(parent){
+        case 4: setPrevT4Dils(t4Dils); setT4Dils(value); if(parseInt(value) > parseInt(prevT4Dils)) handleBlur(4); break;
+        case 3: setPrevT3Dils(t3Dils); setT3Dils(value); if(parseInt(value) > parseInt(prevT3Dils)) handleBlur(3); break;
+        case 2: setPrevT2Dils(t2Dils); setT2Dils(value); if(parseInt(value) > parseInt(prevT2Dils)) handleBlur(2); break;
+        default: break;
+      }
+  }
+
+  const subOneDecrease = (parent) => {
+    switch (parent){
+      case 4: setT3Dils(t3Dils - 1); break;
+      case 3: setT4Dils(t4Dils - 1); break;
+      case 2: setT4Dils(t4Dils - 1); break;
+      default: break;
+    }
+  }
+
+  const subTwoDecrease = (parent) => {
+    switch (parent){
+      case 4: setT2Dils(t2Dils - 1); break;
+      case 3: setT2Dils(t2Dils - 1); break;
+      case 2: setT3Dils(t3Dils - 1); break;
+      default: break;
+    }
+  }
+
+  const handleBlur = (parent) => {
+    let total = parseInt(t4Dils) + parseInt(t3Dils) + parseInt(t2Dils);
+    var firstSub = 0;
+    var secondSub = 0;
+    if (total >= 12) {
+      switch (parent){
+        case 4: firstSub = t3Dils; secondSub = t2Dils; break;
+        case 3: firstSub = t4Dils; secondSub = t2Dils; break;
+        case 2: firstSub = t4Dils; secondSub = t3Dils; break;
+        default: break;
+      }
+
+      while(total >= 12){
+        if(firstSub > 0){
+          subOneDecrease(parent);
+          total--;
+        } else if(secondSub > 0){
+          subTwoDecrease(parent);
+          total--;
+        }
+      }
+    }
+  }
 
   const haveValues = !!(targetChickenCount && internalHatchRate)
 
@@ -133,10 +214,12 @@ const BoostCalculator = (props) => {
           <label className="flex flex-col">
             <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
               Monocle Boost Bonus
-              <img className="hidden w-10 sm:inline-block" alt="T1 Dilithium Monocle" src={monocleUrl1}/>
-              <img className="hidden w-10 sm:inline-block" alt="T2 Dilithium Monocle" src={monocleUrl2}/>
-              <img className="hidden w-10 sm:inline-block" alt="T3 Dilithium Monocle" src={monocleUrl3}/>
-              <img className="hidden w-10 sm:inline-block" alt="T4 Dilithium Monocle" src={monocleUrl4}/>
+              <div className="flex flex-wrap">
+                <img className="w-10 sm:inline-block" alt="T1 Dilithium Monocle" src={monocleUrl1}/>
+                <img className="w-10 sm:inline-block" alt="T2 Dilithium Monocle" src={monocleUrl2}/>
+                <img className="w-10 sm:inline-block" alt="T3 Dilithium Monocle" src={monocleUrl3}/>
+                <img className="w-10 sm:inline-block" alt="T4 Dilithium Monocle" src={monocleUrl4}/>
+              </div>
             </div>
             <div className="flex space-x-2">
               <Input
@@ -159,31 +242,48 @@ const BoostCalculator = (props) => {
               Dilithium Stone Bonus
             </div>
             <div className="flex space-x-2">
-
-              <Input type="number" className="w-16" size="sm"
-                  step={1} max={12} placeholder="12, 8, 4, …" value={t4Dils}
-                  onChange={({ target: { value } }) =>
-                    setT4Dils(value)
-                  }
+              <Input type="number" className="appearance-none w-12" size="sm"
+                  step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t4Dils}
+                  onChange={({ target: { value } }) => handleDilChange(4, value)} disabled={true}
+                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
               />{' '}
-              <img className="hidden w-10 sm:inline-block" alt="T4 Dilithium Stones" src={dilUrl4}/>
+              <div className='flex flex-col justify-center'>
+                <button className="spinner increment dark:text-white"
+                onClick={() => handleButtonIncrement(4)}>&#9650;</button>
+                <button className="spinner decrement dark:text-white"
+                onClick={() => handleButtonDecrement(4)}>&#9660;</button>
+              </div>
+              <img className="w-10 sm:inline-block" alt="T4 Dilithium Stones" src={dilUrl4}/>
 
-              <Input type="number" className="w-16" size="sm"
-                  step={1} max={12} placeholder="12, 8, 4, …" value={t3Dils}
-                  onChange={({ target: { value } }) =>
-                      setT3Dils(value)
-                  }
+              <Input type="number" className="appearance-none w-12" size="sm"
+                  step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t3Dils}
+                  onChange={({ target: { value } }) => handleDilChange(3, value)} disabled={true}
+                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
               />{' '}
-              <img className="hidden w-10 sm:inline-block" alt="T3 Dilithium Stones" src={dilUrl3}/>
+              <div className='flex flex-col justify-center'>
+                <button className="spinner increment dark:text-white"
+                onClick={() => handleButtonIncrement(3)}>&#9650;</button>
+                <button className="spinner decrement dark:text-white"
+                onClick={() => handleButtonDecrement(3)}>&#9660;</button>
+              </div>
+              <img className="w-10 sm:inline-block" alt="T3 Dilithium Stones" src={dilUrl3}/>
 
-              <Input type="number" className="w-16" size="sm"
-                  step={1} max={12} placeholder="12, 8, 4, …" value={t2Dils}
-                  onChange={({ target: { value } }) =>
-                      setT2Dils(value)
-                  }
+              <Input type="number" className="appearance-none w-12" size="sm"
+                  step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t2Dils}
+                  onChange={({ target: { value } }) => handleDilChange(2, value)} disabled={true}
+                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
               />{' '}
-              <img className="hidden w-10 sm:inline-block" alt="T2 Dilithium Stones" src={dilUrl2}/>
+              <div className='flex flex-col justify-center'>
+                <button className="spinner increment dark:text-white"
+                onClick={() => handleButtonIncrement(2)}>&#9650;</button>
+                <button className="spinner decrement dark:text-white"
+                onClick={() => handleButtonDecrement(2)}>&#9660;</button>
+              </div>
+              <img className="w-10 sm:inline-block" alt="T2 Dilithium Stones" src={dilUrl2}/>
             </div>
+            <div className="flex items-center dark:text-white text-opacity-50 m-2">
+                <b>Stones:</b>&nbsp;({parseInt(t2Dils) + parseInt(t3Dils) + parseInt(t4Dils)} / 12)&nbsp;&nbsp;<b>Time Multiplier:</b>&nbsp;{dilithiumBoostBonus ? dilithiumBoostBonus.toFixed(2) : 1}x
+              </div>
           </label>
 
         </div>
@@ -317,7 +417,7 @@ const BoostCalculator = (props) => {
                     }
                   />{' '}
                   <img
-                    className="hidden sm:inline-block"
+                    className="sm:inline-block"
                     alt="Tokens"
                     src={tokenUrl}
                   />
