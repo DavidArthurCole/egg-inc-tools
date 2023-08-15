@@ -9,6 +9,9 @@ import {
 } from 'app/utils/suffixes'
 import classnames from 'classnames'
 
+import nineDotUrl from 'app/images/Nine_Dot_Menu.png'
+import statsUrl from 'app/images/Stats.png'
+
 const ChickensRequiredCalculator = () => {
   const [targetLayRateValue, setTargetLayRateValue] = useState('')
   const [targetLayRateUnit, setTargetLayRateUnit] = useState('per hour')
@@ -81,8 +84,11 @@ const ChickensRequiredCalculator = () => {
         </label>
 
         <label className="flex flex-col font-semibold">
-          <div className="mb-2 dark:text-white text-opacity-80">
+          <div className="mb-2 dark:text-white text-opacity-80 flex items-center">
             Current Egg Lay Rate
+            <div className="bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2 flex items-center">
+              <span className="text-xs">Found in </span><img alt="9 dot menu" className="w-10 h-10 ml-2" src={nineDotUrl}></img><span className="text-xs pl-2">→</span><img alt="Stats sub-menu" className="w-10 h-10 ml-2" src={statsUrl}></img><span className="text-xs pl-2">Stats</span>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <Input

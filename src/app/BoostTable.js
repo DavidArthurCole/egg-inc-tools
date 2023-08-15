@@ -42,8 +42,6 @@ const BoostTable = ({
       (c) => c.tokens <= maxTokens
     )
 
-    console.log("Max hours: " + maxHours)
-
     combos = combos.filter(
       (c) => c.time / 60 <= maxHours
     )
@@ -61,7 +59,7 @@ const BoostTable = ({
   return (
     <table className="w-full mx-auto border border-blue-600">
       <thead className="text-xs text-opacity-80 text-center bg-blue-600 text-white">
-        <tr>
+        <tr key="BoostTableHeader">
           <th className="hidden sm:table-cell"></th>
           <th className="px-2 py-1 text-left">Boost Combo</th>
           <th className="px-2 py-1 text-right">Chickens Hatched</th>
@@ -171,9 +169,9 @@ const BoostTable = ({
           )
         )}
         {boostCombinations.length > boostsToShow.length && (
-          <tr>
+          <tr key="BoostTableFooter">
             <td
-              colspan="6"
+              colSpan="6"
               className="text-center dark:text-white text-opacity-70 text-sm"
             >
               {boostCombinations.length - boostsToShow.length} boost

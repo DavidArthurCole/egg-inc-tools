@@ -20,16 +20,23 @@ import monocleUrl2 from 'app/images/Monocle2.png'
 import monocleUrl3 from 'app/images/Monocle3.png'
 import monocleUrl4 from 'app/images/Monocle4.png'
 
+import nineDotUrl from 'app/images/Nine_Dot_Menu.png'
+import statsUrl from 'app/images/Stats.png'
+
 const BoostCalculator = (props) => {
   const [targetChickenCountValue, setTargetChickenCount] = useState('');
   const unthrottledTargetChickenCount = useMemo(
-    () => parseValueString(targetChickenCountValue),
+    () => parseValueString(targetChickenCountValue.replaceAll(',', '')),
     [targetChickenCountValue]
   );
   const targetChickenCount = useThrottle(unthrottledTargetChickenCount);
 
-  const [unthrottledHatchRate, setInternalHatchRate] = useState(null);
-  const internalHatchRate = useThrottle(unthrottledHatchRate);
+  const [currentHatchRateValue, setCurrentHatchRate] = useState('');
+  const unthrottledCurrentHatchRate = useMemo(
+    () => parseValueString(currentHatchRateValue.replaceAll(',', '')),
+    [currentHatchRateValue]
+  );
+  const currentHatchRate = useThrottle(unthrottledCurrentHatchRate);
 
   const [
     unthrottledArtifactBoostBoostBonus,
@@ -153,19 +160,16 @@ const BoostCalculator = (props) => {
     }
   }
 
-  const haveValues = !!(targetChickenCount && internalHatchRate)
+  const haveValues = !!(targetChickenCount && currentHatchRate)
 
   const hatchRate =
     haveValues &&
     (isOffline
-      ? internalHatchRate * (1 + internalHatcheryCalm / 100)
-      : internalHatchRate) * 4
+      ? currentHatchRate * (1 + internalHatcheryCalm / 100)
+      : currentHatchRate) * 4
 
   return (
-    <Card
-      title="What boosts can I use?"
-      subtitle={<div><span className="bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">Includes Jan 14, 2022 boost changes</span></div>}
-    >
+    <Card title="What boosts can I use?">
       <div className="p-4 space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6">
           <label className="flex flex-col font-semibold">
@@ -192,18 +196,19 @@ const BoostCalculator = (props) => {
           </label>
 
           <label className="flex flex-col">
-            <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
-              Current Internal Hatch Rate
+            <div className="mb-2 dark:text-white text-opacity-80 font-semibold flex items-center">
+              Current Internal Hatch Rate (IHR)
+              <div className="bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2 flex items-center">
+                <span className="text-xs">Found in </span><img alt="9 dot menu" className="w-10 h-10 ml-2" src={nineDotUrl}></img><span className="text-xs pl-2">→</span><img alt="Stats sub-menu" className="w-10 h-10 ml-2" src={statsUrl}></img><span className="text-xs pl-2">Stats</span>
+              </div>
             </div>
             <div className="flex space-x-2">
               <Input
-                type="number"
+                type="text"
                 className="flex-grow"
-                placeholder="1, 2, 10, …"
-                value={unthrottledHatchRate || ''}
-                onChange={({ target: { value } }) =>
-                  setInternalHatchRate(parseInt(value, 10) || null)
-                }
+                value={currentHatchRateValue}
+                onChange={({ target: { value } }) => setCurrentHatchRate(value)}
+                placeholder="9200, 9.2K, '9,200', …"
               />{' '}
               <div className="flex items-center dark:text-white text-opacity-50">
                 🐔 / hab / minute
@@ -215,17 +220,17 @@ const BoostCalculator = (props) => {
             <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
               Monocle Boost Bonus
               <div className="flex flex-wrap">
-                <img className="w-10 sm:inline-block" alt="T1 Dilithium Monocle" src={monocleUrl1}/>
-                <img className="w-10 sm:inline-block" alt="T2 Dilithium Monocle" src={monocleUrl2}/>
-                <img className="w-10 sm:inline-block" alt="T3 Dilithium Monocle" src={monocleUrl3}/>
-                <img className="w-10 sm:inline-block" alt="T4 Dilithium Monocle" src={monocleUrl4}/>
+                <img className="w-10 sm:inline-block" alt="T1 Dilithium Monocle" src={monocleUrl1} onClick={() => setArtifactBoostBoostBonus(5)}/>
+                <img className="w-10 sm:inline-block" alt="T2 Dilithium Monocle" src={monocleUrl2} onClick={() => setArtifactBoostBoostBonus(10)}/>
+                <img className="w-10 sm:inline-block" alt="T3 Dilithium Monocle" src={monocleUrl3} onClick={() => setArtifactBoostBoostBonus(14)}/>
+                <img className="w-10 sm:inline-block" alt="T4 Dilithium Monocle" src={monocleUrl4} onClick={() => setArtifactBoostBoostBonus(20)}/>
               </div>
             </div>
             <div className="flex space-x-2">
               <Input
                 type="number"
                 className="flex-grow"
-                placeholder="1, 2, 10, …"
+                placeholder="1, 2, 10, …" min={0}
                 value={unthrottledArtifactBoostBoostBonus}
                 onChange={({ target: { value } }) =>
                   setArtifactBoostBoostBonus(parseInt(value, 10) || null)
@@ -245,7 +250,7 @@ const BoostCalculator = (props) => {
               <Input type="number" className="appearance-none w-12" size="sm"
                   step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t4Dils}
                   onChange={({ target: { value } }) => handleDilChange(4, value)} disabled={true}
-                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
+                  style={{ WebkitAppearance: "none", "MozAppearance": "textfield" }}
               />{' '}
               <div className='flex flex-col justify-center'>
                 <button className="spinner increment dark:text-white"
@@ -253,12 +258,12 @@ const BoostCalculator = (props) => {
                 <button className="spinner decrement dark:text-white"
                 onClick={() => handleButtonDecrement(4)}>&#9660;</button>
               </div>
-              <img className="w-10 sm:inline-block" alt="T4 Dilithium Stones" src={dilUrl4}/>
+              <img className="w-10 h-10 sm:inline-block" alt="T4 Dilithium Stones" src={dilUrl4}/>
 
               <Input type="number" className="appearance-none w-12" size="sm"
                   step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t3Dils}
                   onChange={({ target: { value } }) => handleDilChange(3, value)} disabled={true}
-                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
+                  style={{ WebkitAppearance: "none", "MozAppearance": "textfield" }}
               />{' '}
               <div className='flex flex-col justify-center'>
                 <button className="spinner increment dark:text-white"
@@ -266,12 +271,12 @@ const BoostCalculator = (props) => {
                 <button className="spinner decrement dark:text-white"
                 onClick={() => handleButtonDecrement(3)}>&#9660;</button>
               </div>
-              <img className="w-10 sm:inline-block" alt="T3 Dilithium Stones" src={dilUrl3}/>
+              <img className="w-10 h-10 sm:inline-block" alt="T3 Dilithium Stones" src={dilUrl3}/>
 
               <Input type="number" className="appearance-none w-12" size="sm"
                   step={1} max={12} min={0} placeholder="12, 8, 4, …" value={t2Dils}
                   onChange={({ target: { value } }) => handleDilChange(2, value)} disabled={true}
-                  style={{ WebkitAppearance: "none", "-moz-appearance": "textfield" }}
+                  style={{ WebkitAppearance: "none", "MozAppearance": "textfield" }}
               />{' '}
               <div className='flex flex-col justify-center'>
                 <button className="spinner increment dark:text-white"
@@ -279,7 +284,7 @@ const BoostCalculator = (props) => {
                 <button className="spinner decrement dark:text-white"
                 onClick={() => handleButtonDecrement(2)}>&#9660;</button>
               </div>
-              <img className="w-10 sm:inline-block" alt="T2 Dilithium Stones" src={dilUrl2}/>
+              <img className="w-10 h-10 sm:inline-block" alt="T2 Dilithium Stones" src={dilUrl2}/>
             </div>
             <div className="flex items-center dark:text-white text-opacity-50 m-2">
                 <b>Stones:</b>&nbsp;({parseInt(t2Dils) + parseInt(t3Dils) + parseInt(t4Dils)} / 12)&nbsp;&nbsp;<b>Time Multiplier:</b>&nbsp;{dilithiumBoostBonus ? dilithiumBoostBonus.toFixed(2) : 1}x
@@ -400,7 +405,6 @@ const BoostCalculator = (props) => {
             <div className="flex flex-col flex-row">
               <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
                 Max Tokens
-                <span className="uppercase bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">NEW</span>
               </div>
               <div className="flex space-x-2">
                 <div className="flex-grow flex items-center dark:text-white text-opacity-50 w-12">
@@ -429,7 +433,6 @@ const BoostCalculator = (props) => {
             <div className="flex flex-col flex-row">
               <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
                 Max Boost Time
-                <span className="uppercase bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">NEW</span>
               </div>
               <div className="flex space-x-2">
                 <div className="flex-grow flex items-center dark:text-white text-opacity-50 w-12">
@@ -458,14 +461,12 @@ const BoostCalculator = (props) => {
 
         </div>
 
-        <Card
-          title={<div>Contract-Specific Buffs/Debuffs <span className="uppercase bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">NEW</span></div>}
-        >
+        <Card title="Contract-Specific Buffs/Debuffs">
           <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 space-y-6 md:space-x-3 lg:space-y-0 lg:space-x-6 p-4 space-y-6">
             <div className="flex flex-col flex-row">
               <label className="flex flex-col">
                 <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
-                  Internal Hatchery Rate (IHR)
+                  Internal Hatchery Rate (IHR) 
                 </div>
                 <div className="flex space-x-2">
                   <input
