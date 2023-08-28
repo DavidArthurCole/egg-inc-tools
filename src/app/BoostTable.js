@@ -14,7 +14,6 @@ const BoostTable = ({
   artifactBoostBoostBonus,
   dilithiumBoostBonus,
   doubleBoostLength,
-  internalHatcheryBuff,
   maxTokens,
   maxHours,
 }) => {
@@ -34,7 +33,7 @@ const BoostTable = ({
     }
     combos = combos.filter(
       (c) =>
-        c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}, {internalHatcheryBuff}) >=
+        c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}) >=
         target * 0.98
     )
 
@@ -54,7 +53,7 @@ const BoostTable = ({
 
     combos = combos.slice(0, limit)
     return combos
-  }, [limit, hasProPermit, showOldBoosts, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength, internalHatcheryBuff, maxTokens, maxHours])
+  }, [limit, hasProPermit, showOldBoosts, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength, maxTokens, maxHours])
 
   return (
     <table className="w-full mx-auto border border-blue-600">
@@ -142,7 +141,7 @@ const BoostTable = ({
               </td>
               <td className="px-2 py-1 text-right text-black dark:text-white font-semibold">
                 {displayValueShort(
-                  chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}, {internalHatcheryBuff})
+                  chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength})
                 )}{' '}
                 🐔
               </td>

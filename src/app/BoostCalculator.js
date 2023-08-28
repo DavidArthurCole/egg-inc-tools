@@ -47,8 +47,6 @@ const BoostCalculator = (props) => {
   );
 
   const [dilithiumBoostBonus, setDilithiumBoostBonus] = useState();
-
-  const [internalHatcheryBuff, setInternalHatcheryBuff] = useState(0);
   const [internalHatcheryCalm, setInternalHatcheryCalm] = useState(200);
   const [isOffline, setIsOffline] = useState(true);
 
@@ -461,34 +459,6 @@ const BoostCalculator = (props) => {
 
         </div>
 
-        <Card title="Contract-Specific Buffs/Debuffs">
-          <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 space-y-6 md:space-x-3 lg:space-y-0 lg:space-x-6 p-4 space-y-6">
-            <div className="flex flex-col flex-row">
-              <label className="flex flex-col">
-                <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
-                  Internal Hatchery Rate (IHR) 
-                </div>
-                <div className="flex space-x-2">
-                  <input
-                    type="range"
-                    value={internalHatcheryBuff}
-                    min={-80}
-                    max={100}
-                    step={5}
-                    onChange={({ target: { value } }) =>
-                    setInternalHatcheryBuff(value)
-                    }
-                  />{' '}
-                  <div className="flex items-center justify-end dark:text-white text-opacity-50 w-12">
-                    {internalHatcheryBuff > 0 && '+'}
-                    {internalHatcheryBuff}%
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-        </Card>
-
         {haveValues && (
           <BoostTable
             target={targetChickenCount}
@@ -496,9 +466,8 @@ const BoostCalculator = (props) => {
             hasProPermit={hasProPermit}
             showOldBoosts={showOldBoosts}
             artifactBoostBoostBonus={artifactBoostBoostBonus}
-            dilithiumBoostBonus={dilithiumBoostBonus ? dilithiumBoostBonus : 1}
+            dilithiumBoostBonus={dilithiumBoostBonus || 1}
             doubleBoostLength={doubleBoostLength}
-            internalHatcheryBuff={internalHatcheryBuff}
             maxTokens={maxTokens}
             maxHours={maxHours}
           />
