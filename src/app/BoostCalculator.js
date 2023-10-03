@@ -53,6 +53,7 @@ const BoostCalculator = (props) => {
   const [doubleBoostLength, setDoubleBoostLength] = useState(false);
   const [hasProPermit, setHasProPermit] = useState(true);
   const [showOldBoosts, setShowOldBoosts] = useState(false);
+  const [useBetaTokens, setUseBetaTokens] = useState(true);
   const [maxTokens, setMaxTokens] = useState(30);
   const [maxHours, setMaxHours] = useState(6);
 
@@ -455,6 +456,27 @@ const BoostCalculator = (props) => {
                 </div>
               </div>
             </div>
+
+            <div className="flex flex-col">
+              <div className="mb-2 dark:text-white text-opacity-80 font-semibold">
+                Adj. Token Costs <span class="uppercase bg-gray-100 dark:bg-gray-700 text-xs px-2 py-1 rounded-xl ml-2">NEW</span>
+              </div>
+              <div className="flex space-x-2">
+                <div className="flex-grow flex items-center dark:text-white text-opacity-50 w-12">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={useBetaTokens}
+                      onChange={({ target: { checked } }) =>
+                        setUseBetaTokens(checked)
+                      }
+                    />
+                    <span>Use Beta Token Costs <a rel="noreferrer" href="https://twitter.com/Auxbrain/status/1707753208536576252" target="_blank">(❓)</a></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -465,6 +487,7 @@ const BoostCalculator = (props) => {
             hatchRate={hatchRate}
             hasProPermit={hasProPermit}
             showOldBoosts={showOldBoosts}
+            useBetaTokens={useBetaTokens}
             artifactBoostBoostBonus={artifactBoostBoostBonus}
             dilithiumBoostBonus={dilithiumBoostBonus || 1}
             doubleBoostLength={doubleBoostLength}

@@ -10,6 +10,7 @@ const BoostTable = ({
   hatchRate,
   hasProPermit,
   showOldBoosts,
+  useBetaTokens,
   target,
   artifactBoostBoostBonus,
   dilithiumBoostBonus,
@@ -38,7 +39,7 @@ const BoostTable = ({
     )
 
     combos = combos.filter(
-      (c) => c.tokens <= maxTokens
+      (c) => (useBetaTokens ? c.newTokens : c.tokens) <= maxTokens
     )
 
     combos = combos.filter(
@@ -47,13 +48,13 @@ const BoostTable = ({
 
     combos = orderBy(
       combos,
-      [sortBy, 'cost', 'tokens', 'time'],
+      [sortBy, 'cost', (useBetaTokens ? 'newTokens' : 'tokens'), 'time'],
       ['asc', 'asc', 'asc', 'asc']
     )
 
     combos = combos.slice(0, limit)
     return combos
-  }, [limit, hasProPermit, showOldBoosts, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength, maxTokens, maxHours])
+  }, [limit, hasProPermit, showOldBoosts, useBetaTokens, hatchRate, target, sortBy, dilithiumBoostBonus, artifactBoostBoostBonus, doubleBoostLength, maxTokens, maxHours])
 
   return (
     <table className="w-full mx-auto border border-blue-600">
@@ -68,8 +69,8 @@ const BoostTable = ({
             </button>
           </th>
           <th className="px-2 py-1 text-right">
-            <button className="font-bold" onClick={() => setSortBy('tokens')}>
-              Token Cost{sortBy === 'tokens' && ' ▲'}
+            <button className="font-bold" onClick={() => setSortBy((useBetaTokens ? 'newTokens' : 'tokens'))}>
+              Token Cost{sortBy === (useBetaTokens ? 'newTokens' : 'tokens') && ' ▲'}
             </button>
           </th>
           <th className="hidden sm:table-cell px-2 py-1 text-right">
@@ -87,6 +88,7 @@ const BoostTable = ({
             name,
             cost,
             tokens,
+            newTokens,
             time,
             key,
             chickensForHatchRate,
@@ -154,7 +156,7 @@ const BoostTable = ({
                 />
               </td>
               <td className="text-right px-2 py-1">
-                {tokens.toLocaleString()}{' '}
+                {(useBetaTokens ? newTokens : tokens).toLocaleString()}{' '}
                 <img
                   className="hidden sm:inline-block"
                   alt="Tokens"
