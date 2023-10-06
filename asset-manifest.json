@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/egg-inc-tools/static/css/main.c65eb80c.css",
-    "main.js": "/egg-inc-tools/static/js/main.19b2925f.js",
+    "main.js": "/egg-inc-tools/static/js/main.6fc47e6b.js",
     "static/media/Monocle4.png": "/egg-inc-tools/static/media/Monocle4.f559802b9e290eb10f7a.png",
     "static/media/Dilithium_Stone4.png": "/egg-inc-tools/static/media/Dilithium_Stone4.2eb382a48b2708708a06.png",
     "static/media/Monocle3.png": "/egg-inc-tools/static/media/Monocle3.64d1758aa2aa7b1256f3.png",
@@ -12,10 +12,10 @@
     "static/media/Dilithium_Stone2.png": "/egg-inc-tools/static/media/Dilithium_Stone2.3c837af73c8f6f380bdf.png",
     "index.html": "/egg-inc-tools/index.html",
     "main.c65eb80c.css.map": "/egg-inc-tools/static/css/main.c65eb80c.css.map",
-    "main.19b2925f.js.map": "/egg-inc-tools/static/js/main.19b2925f.js.map"
+    "main.6fc47e6b.js.map": "/egg-inc-tools/static/js/main.6fc47e6b.js.map"
   },
   "entrypoints": [
     "static/css/main.c65eb80c.css",
-    "static/js/main.19b2925f.js"
+    "static/js/main.6fc47e6b.js"
   ]
 }
