@@ -24,7 +24,11 @@ const BoostTable = ({
   const boostsToShow = useMemo(() => {
     let combos = boostCombinations
 
-    combos.forEach((c) => c.time = +(c.getComboTime() * dilithiumBoostBonus).toFixed(2));
+    //Set time based on dil and double boost event
+    combos.forEach((c) => {
+      c.time = +(c.getComboTime() * dilithiumBoostBonus * (doubleBoostLength ? 2 : 1)).toFixed(2);
+      c.hatched = c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength});
+    });
 
     if (!hasProPermit) {
       combos = combos.filter((c) => c.prisms.length + c.beacons.length <= 2)
@@ -33,9 +37,7 @@ const BoostTable = ({
       combos = combos.filter(c => !c.prisms.some(p => p.old) && !c.beacons.some(b => b.old))
     }
     combos = combos.filter(
-      (c) =>
-        c.chickensForHatchRate(hatchRate, { dilithiumBoostBonus }, { artifactBoostBoostBonus }, {doubleBoostLength}) >=
-        target * 0.98
+      (c) => c.hatched >= target * 0.98
     )
 
     combos = combos.filter(
@@ -46,10 +48,15 @@ const BoostTable = ({
       (c) => c.time / 60 <= maxHours
     )
 
+    //Refresh time to target
+    combos.forEach(
+      (c) => c.timeToTarget = (c.time / (c.hatched / target)).toFixed(2)
+    );
+
     combos = orderBy(
       combos,
-      [sortBy, 'cost', (useBetaTokens ? 'newTokens' : 'tokens'), 'time'],
-      ['asc', 'asc', 'asc', 'asc']
+      [sortBy, 'cost', (useBetaTokens ? 'newTokens' : 'tokens'), 'time', 'timeToTarget'],
+      ['asc', 'asc', 'asc', 'asc', 'asc']
     )
 
     combos = combos.slice(0, limit)
@@ -74,15 +81,20 @@ const BoostTable = ({
             </button>
           </th>
           <th className="hidden sm:table-cell px-2 py-1 text-right">
+          <button className="font-bold" onClick={() => setSortBy('timeToTarget')}>
+              Time to Target{sortBy === 'timeToTarget' && ' ▲'}
+            </button>
+          </th>
+          <th className="hidden sm:table-cell px-2 py-1 text-right">
             <button className="font-bold" onClick={() => setSortBy('time')}>
-              Time{sortBy === 'time' && ' ▲'}
+              Time (Total){sortBy === 'time' && ' ▲'}
             </button>
           </th>
         </tr>
       </thead>
       <tbody>
-        {boostsToShow.map(
-          ({
+        {boostsToShow.map(({
+            timeToTarget,
             prisms,
             beacons,
             name,
@@ -162,6 +174,9 @@ const BoostTable = ({
                   alt="Tokens"
                   src={tokenUrl}
                 />
+              </td>
+              <td className="text-right px-2 py-1 hidden sm:table-cell">
+                {timeToTarget} min
               </td>
               <td className="text-right px-2 py-1 hidden sm:table-cell">
                 {time} min
