@@ -15,6 +15,8 @@ export const suffixes = {
   U: 1e36,
   D: 1e39,
   Td: 1e42,
+  qd: 1e45,
+  Qd: 1e48,
 }
 
 export const suffixDisplay = {
@@ -32,6 +34,8 @@ export const suffixDisplay = {
   1e36: 'Undecillion',
   1e39: 'Duodecillion',
   1e42: 'Tredecillion',
+  1e45: 'Quattuordecillion',
+  1e48: 'Quindecillion',
 }
 
 const valueParseRegex = new RegExp(/^((?:\d|\.)+)(?:e(\d+))?(\w)?$/)

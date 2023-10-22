@@ -14,11 +14,11 @@ function App() {
           </div>
 
           <div className="col-span-1 md:col-span-2 mt-6 text-black dark:text-white text-opacity-40 text-xs text-center">
-            Created by <a rel="noreferrer" href="https://github.com/SaladFork/" target="_blank">Fork</a>.
-            Updated and maintained by <a rel="noreferrer" href="https://github.com/DavidArthurCole" target="_blank">Daveed</a>.
+            Created by <a rel="noreferrer" target="_blank" href="https://github.com/SaladFork/">Fork</a>.
+            Updated and maintained by <a rel="noreferrer" target="_blank" href="https://github.com/DavidArthurCole">Daveed</a>.
             <br />
             Data, game logic, and images are all copyright &copy;{' '}
-            <a rel="noreferrer" href="http://auxbrain.com/">Auxbrain, Inc.</a> as part of their
+            <a rel="noreferrer" target="_blank" href="http://auxbrain.com/">Auxbrain, Inc.</a> as part of their
             game Egg, Inc.
             <br />
             Note: this calculator uses conservative estimates that do not take
